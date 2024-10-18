@@ -1,0 +1,2 @@
+https://tallesvaliatti.com/criando-data-transfer-objects-com-o-automapper-981f4c11b6b0
+https://medium.com/@dhananjay_1891/a-comprehensive-guide-to-repository-pattern-in-net-implementation-and-best-practices-d67c3a92e618#:~:text=In%20ASP.NET%20Core%2C%20the,makes%20unit%20testing%20more%20straightforward.

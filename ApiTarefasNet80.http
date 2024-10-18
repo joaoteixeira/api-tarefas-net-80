@@ -1,0 +1,6 @@
+@ApiTarefasNet80_HostAddress = http://localhost:5204
+
+GET {{ApiTarefasNet80_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
