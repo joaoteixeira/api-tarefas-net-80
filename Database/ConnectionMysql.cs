@@ -8,29 +8,29 @@ namespace ApiTarefasNet80.Database
 
         private static readonly string host = "localhost";
 
-        private static readonly string port = "3306";
+        private static readonly string port = "3308";
 
         private static readonly string user = "root";
 
         private static readonly string password = "root";
 
-        private static readonly string dbname = "agenda_db";
+        private static readonly string dbname = "tarefas_db";
 
-        private static MySqlConnection connection;
+        private static MySqlConnection? _connection;
 
-        private static MySqlCommand command;
+        private static MySqlCommand? _command;
 
         public ConnectionMysql()
         {
             try
             {
-                connection = new MySqlConnection($"server={host};database={dbname};port={port};user={user};password={password}");
-                connection.Open();
+                _connection = new MySqlConnection($"server={host};database={dbname};port={port};user={user};password={password}");
+                _connection.Open();
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                throw;
             }
         }
 
@@ -38,20 +38,20 @@ namespace ApiTarefasNet80.Database
         {
             try
             {
-                command = connection.CreateCommand();
-                command.CommandType = CommandType.Text;
+                _command = _connection.CreateCommand();
+                _command.CommandType = CommandType.Text;
 
-                return command;
+                return _command;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                throw;
             }
         }
 
         public void Close()
         {
-            connection.Close();
+            _connection.Close();
         }
     }
 }

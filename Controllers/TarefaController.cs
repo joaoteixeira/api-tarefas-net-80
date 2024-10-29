@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApiTarefasNet80.Controllers
 {
-
     [Route("tarefas")]
     [ApiController]
     public class TarefaController : Controller
@@ -12,78 +11,106 @@ namespace ApiTarefasNet80.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            //List<Tarefa> listaTarefas = new TarefaDAO().List();
+            try
+            {
+                List<Tarefa> listaTarefas = new TarefaDAO().List();
 
-            return Ok();
+                return Ok(listaTarefas);
+            }
+            catch (Exception)
+            {
+                return Problem($"Ocorreram erros ao processar a solicitação");
+            }
         }
 
-        //[HttpGet("{id}")]
-        //public IActionResult GetById(int id) {
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            try
+            {
+                var tarefa = new TarefaDAO().GetById(id);
 
-        //    var tarefa = listaTarefas.Where(item => item.Id == id).FirstOrDefault();
+                if (tarefa == null)
+                {
+                    return NotFound();
+                }
 
-        //    if (tarefa == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok();
-        //}
+                return Ok(tarefa);
+            }
+            catch (Exception)
+            {
+                return Problem("Ocorreram erros ao processar a solicitação");
+            }
+        }
 
         [HttpPost]
         public IActionResult Post([FromBody] TarefaDTO item)
         {
-
             var tarefa = new Tarefa();
 
-            //tarefa.Descricao = item.Descricao;
-            //tarefa.Feito = item.Feito;
-            //tarefa.Data = DateTime.Now;
+            tarefa.Descricao = item.Descricao;
+            tarefa.Feito = item.Feito;
+            tarefa.Data = DateTime.Now;
 
-            //try
-            //{
-            //    var dao = new TarefaDAO();
-            //    tarefa.Id = dao.Insert(tarefa);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return BadRequest(ex.Message);
-            //}
+            try
+            {
+                var dao = new TarefaDAO();
+                tarefa.Id = dao.Insert(tarefa);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
 
             return Created("", tarefa);
         }
 
-        //[HttpPut("{id}")]
-        //public IActionResult Put(int id, [FromBody] TarefaDTO item)
-        //{
-        //    var tarefa = listaTarefas.Where(item => item.Id == id).FirstOrDefault();
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] TarefaDTO item)
+        {
+            try
+            {
+                var tarefa = new TarefaDAO().GetById(id);
 
-        //    if (tarefa == null)
-        //    {
-        //        return NotFound();
-        //    }
+                if (tarefa == null)
+                {
+                    return NotFound();
+                }
 
-        //    tarefa.Descricao = item.Descricao;
-        //    tarefa.Feito = item.Feito;
+                tarefa.Descricao = item.Descricao;
+                tarefa.Feito = item.Feito;
 
-        //    return Ok(listaTarefas);
-        //}
+                new TarefaDAO().Update(tarefa);
 
-        //[HttpDelete("{id}")]
-        //public IActionResult Delete(int id)
-        //{
+                return Ok(tarefa);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
 
-        //    var tarefa = listaTarefas.Where(item => item.Id == id).FirstOrDefault();
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var tarefa = new TarefaDAO().GetById(id);
 
-        //    if (tarefa == null)
-        //    {
-        //        return NotFound();
-        //    }
+                if (tarefa == null)
+                {
+                    return NotFound();
+                }
 
-        //    listaTarefas.Remove(tarefa);
+                new TarefaDAO().Delete(tarefa.Id);
 
-        //    return Ok(tarefa);
-        //}
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
     }
 }

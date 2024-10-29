@@ -5,8 +5,8 @@ namespace ApiTarefasNet80.DTOs
 {
     public class TarefaDTO
     {
-        [Required]
-        [MinLength(5)]
+        [Required(ErrorMessage = "Campo obrigatório")]
+        [MinLength(5, ErrorMessage = "Obrigatório mínimo de 5 caracteres")]
         public string? Descricao { get; set; }
 
         [DefaultValue(false)]
