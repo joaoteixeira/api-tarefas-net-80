@@ -22,7 +22,6 @@ namespace ApiTarefasNet80.Models
                 query.Parameters.AddWithValue("@descricao", item.Descricao);
                 query.Parameters.AddWithValue("@data", item.Data.ToString("yyyy-MM-dd HH:mm:ss")); //"10/11/1990" -> "1990-11-10"
 
-
                 var result = query.ExecuteNonQuery();
 
                 if (result == 0)
@@ -85,11 +84,16 @@ namespace ApiTarefasNet80.Models
                 // Tarefa _tarefa = new();
 
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM tarefas WHERE id = @_id";
+                query.CommandText = "SELECT * FROM tarefas WHERE id_tar = @_id";
 
                 query.Parameters.AddWithValue("@_id", id);
 
                 MySqlDataReader reader = query.ExecuteReader();
+
+                if (!reader.HasRows)
+                {
+                    return null;
+                }
 
                 while (reader.Read())
                 {
